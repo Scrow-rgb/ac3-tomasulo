@@ -5,23 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    
     <title>Simulador - Algoritmo de Tomasulo</title>
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="simulador.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-
     <div class="container" id="tela_inicial">
         <div class="row">
             <h1>Simulador de Tomasulo</h1>
-            <button onclick="adicionar_linha()">
+            <button type="button" class="btn btn-primary" onclick="adicionar_linha()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                   </svg>
             </button>
+            <button type="button" class="btn btn-danger" onclick="limpar()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                <path d="M10.707 8l3.647-3.646a.5.5 0 0 0-.708-.708L10 7.293l-3.646-3.647a.5.5 0 1 0-.708.708L9.293 8l-3.647 3.646a.5.5 0 0 0 .708.708L10 8.707l3.646 3.647a.5.5 0 0 0 .708-.708L10.707 8z"/>
+              </svg>              
+          </button>
         </div>
+        <input hidden id="row_count" type="text" value="0">
         <table class="table">
             <thead>
               <tr>
@@ -33,26 +37,27 @@
               </tr>
             </thead>
             <tbody id="table_body">
-                
-              <tr id="instuction">
-                <input hidden type="text" id="index" value="0">
-                <th scope="row">0</th>
-                <td><select class="form-select" aria-label="Default select example">
+              <tr id="instuction" class="intruction_row" hidden>
+                <th id="index" scope="row">0</th>
+                <td><select id="select_instruction" class="form-select" onchange="onchange_instruction(this)">
                     <option value="1">Add</option>
-                    <option value="1">Sub</option>
-                    <option value="1">Addi</option>
+                    <option value="2">Sub</option>
+                    <option value="3">Addi</option>
+                    <option value="4">Beq</option>
+                    <option value="5">Bne</option>
+                    <option value="6">Mult</option>
                   </select></td>
-                <td><select class="form-select" aria-label="Default select example">
+                <td><select id="register" class="form-select" aria-label="Default select example">
                     <option value="1">R0</option>
                     <option value="2">R1</option>
                     <option value="3">R2</option>
                   </select></td>
-                <td><select class="form-select" aria-label="Default select example">
+                <td><select id="register2" class="form-select" aria-label="Default select example">
                     <option value="1">R0</option>
                     <option value="2">R1</option>
                     <option value="3">R2</option>
                   </select></td>
-                  <td><select class="form-select" aria-label="Default select example">
+                  <td><select id="register3" class="form-select" aria-label="Default select example">
                     <option value="1">R0</option>
                     <option value="2">R1</option>
                     <option value="3">R2</option>
@@ -61,7 +66,7 @@
             </tbody>
           </table>
 
-          <button onclick="execute()">Executar</button>
+          <button type="button" class="btn btn-success" onclick="execute()">Executar</button>
     </div>
 
     <div class="container" id="execucao">
@@ -96,7 +101,7 @@
               </tr>
             </tbody>
           </table>
-          <button onclick="voltar()">Voltar</button>
+          <button type="button" class="btn btn-warning" onclick="voltar()">Voltar</button>
     </div>
     
     
