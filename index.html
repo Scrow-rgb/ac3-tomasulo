@@ -23,7 +23,7 @@
           </div>
           <div class="col">
             <button type="button" class="btn btn-primary w-100 mb-4" onclick="execute()"> 
-              <i class="fa fa-cogs" aria-hidden="true"></i>    
+              <i class="fa fa-play" aria-hidden="true"></i>   
             </button> 
           </div>
         </div>
@@ -42,7 +42,7 @@
               </tr>
             </thead>
             <tbody id="table_body">
-              <tr id="instuction" class="intruction_row" hidden>
+              <tr id="instuction" class="instruction_row" hidden>
                 <th id="index" scope="row">0</th>
                 <td>
                   <select id="select_instruction" class="form-select" onchange="onchange_instruction(this)">
@@ -56,29 +56,42 @@
                   </select>
                 </td>
                 <td>
-                  <select id="register" class="form-select" aria-label="Default select example">
+                  <select id="register" class="form-select">
                     <option value=""></option>
-                    <option value="1">R0</option>
-                    <option value="2">R1</option>
-                    <option value="3">R2</option>
+                    <option value="0">R0</option>
+                    <option value="1">R1</option>
+                    <option value="2">R2</option>
+                    <option value="3">R3</option>
+                    <option value="4">R4</option>
+                    <option value="5">R5</option>
+                    <option value="6">R6</option>
+                    <option value="7">R7</option>
+                    <option value="8">R8</option>
+                    <option value="9">R9</option>
+                    <option value="10">R10</option>
+                    <option value="11">R11</option>
+                    <option value="12">R12</option>
+                    <option value="13">R13</option>
+                    <option value="14">R14</option>
+                    <option value="15">R15</option>
                   </select>
                 </td>
                 <td>
-                  <input type="text" placeholder="30" class="form-control">
+                  <input type="text" id="register2" placeholder="(R0,R1,30...)" class="form-control">
                 </td>
                   <td>
-                    <input type="text" placeholder="R2" class="form-control">
+                    <input type="text" id="register3" placeholder="(R0,R1,30...)" class="form-control">
                 </td>
               </tr>
             </tbody>
           </table>
           <div class="btn-group col-3 w-100" role="group" aria-label="Botões">
-            <button type="button" class="btn btn-outline-danger" onclick="limpar()">
+            <button type="button" class="btn btn-outline-danger" onclick="clear_table()">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                 <path d="M10.707 8l3.647-3.646a.5.5 0 0 0-.708-.708L10 7.293l-3.646-3.647a.5.5 0 1 0-.708.708L9.293 8l-3.647 3.646a.5.5 0 0 0 .708.708L10 8.707l3.646 3.647a.5.5 0 0 0 .708-.708L10.707 8z"/>
               </svg>              
             </button>
-            <button type="button" class="btn btn-success" onclick="adicionar_linha()">
+            <button type="button" class="btn btn-success" onclick="add_row()">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
               </svg>
@@ -126,29 +139,6 @@
             <div class="col-sm-6">
               <div class="card mb-3">
                 <div class="card-body">
-                  <h5 class="card-title">Registers</h5>
-                  <p class="card-text">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Name</th>
-                          <th scope="col">Value</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>R0</td>
-                          <td>0</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="card mb-3">
-                <div class="card-body">
                   <h5 class="card-title">ROB - Reorder Buffer</h5>
                   <p class="card-text">
                     <table class="table">
@@ -180,9 +170,32 @@
             <div class="col-sm-6">
               <div class="card mb-3">
                 <div class="card-body">
-                  <h5 class="card-title">FU - Functional Units</h5>
+                  <h5 class="card-title">Registers</h5>
                   <p class="card-text">
                     <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Name</th>
+                          <th scope="col">Value</th>
+                        </tr>
+                      </thead>
+                      <tbody id="registers_table_body">
+                        <tr id="register_name" hidden>
+                          <td class="register_name" >R0</td>
+                          <td>0</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">FU - Functional Units</h5>
+                  <p class="card-text">
+                    <table id="fu_table" class="table">
                       <thead>
                         <tr>
                           <th scope="col">Name</th>
@@ -190,22 +203,6 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>Add</td>
-                          <td>Free</td>
-                        </tr>
-                        <tr>
-                          <td>Mult</td>
-                          <td>Free</td>
-                        </tr>
-                        <tr>
-                          <td>Store</td>
-                          <td>Free</td>
-                        </tr>
-                        <tr>
-                          <td>Load</td>
-                          <td>Free</td>
-                        </tr>
                       </tbody>
                     </table>
                   </p>
@@ -214,11 +211,11 @@
             </div>
           </div>
         <div class="btn-group col-3 w-100" role="group" aria-label="Botões">
-          <button type="button" class="btn btn-secondary w-100" onclick="voltar()">
+          <button type="button" class="btn btn-secondary w-100" onclick="home()">
             <i class="fa fa-arrow-left" aria-hidden="true"></i>
             Return
           </button>
-          <button type="button" class="btn btn-primary w-100" onclick="voltar()">
+          <button type="button" class="btn btn-primary w-100" onclick="next()">
             Next step
             <i class="fa fa-forward" aria-hidden="true"></i>
           </button>
