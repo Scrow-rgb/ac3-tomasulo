@@ -1,0 +1,5 @@
+Add R0 R2 1
+Add R0 R2 2
+Add R0 R2 3
+Add R0 R2 4
+Add R0 R2 5

@@ -14,6 +14,29 @@ function execute(){
     arq = new Architecture();
     load_fu_table(arq);
     load_instructions_table();
+    load_rob_table();
+}
+
+function load_rob_table(){
+    var instruction_rows = document.querySelectorAll(".instruction_row");
+    var length = instruction_rows.length-1;
+    var tableBody = $("#rob_table tbody"); // Get the reference to the table body
+    tableBody.empty(); // Remove all rows from the table body
+    for(i=1;i<length+1;i++){
+        var instruct_aux =  $("#select_instruction_"+x).val();
+        instruct_aux += $("#register_"+x).val();
+        instruct_aux += ", " + $("#register_xi_"+x).val();
+        instruct_aux += ", " + $("#register_xj_"+x).val();
+
+        var newRow = $("<tr>"); // Create a new row with data
+        var instruction = $("<td>").text("Add R0, R1, R3");
+        var state = $("<td>").text("issue");
+        var emission_cycle = $("<td>").text("1");
+        var destination = $("<td>").text("R2");
+        var completion_cycle = $("<td>").text(3);
+        newRow.append(instruction, state,emission_cycle,destination,completion_cycle);
+        tableBody.append(newRow); // Append the new row to the table body
+    }
 }
 
 function load_instructions_table(){

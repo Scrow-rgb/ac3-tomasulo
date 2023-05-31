@@ -112,6 +112,18 @@
     <!-- TELA DE EXECUÇÃO -->
     <div class="container" id="execucao">
       <div class="card m-4 p-4">
+        <div class="position-absolute top-0 end-0 m-2 row g-1">
+          <div class="col">
+            <button type="button" class="btn btn-outline-secondary w-100 mb-4" onclick="home()"> 
+              <i class="fa fa-home" aria-hidden="true"></i>
+            </button> 
+          </div>
+          <div class="col">
+            <button type="button" class="btn btn-success w-100 mb-4" onclick="next()"> 
+              <i class="fa fa-forward" aria-hidden="true"></i>
+            </button> 
+          </div>
+        </div>
         <h1 class="text-center pt-4 text-secondary">Execution</h1>
         <h3 class="text-center text-dark mb-4">(Step <label class="text-success">0</label>)</h3>
         <div class="container">
@@ -148,15 +160,14 @@
                 <div class="card-body">
                   <h5 class="card-title">ROB - Reorder Buffer</h5>
                   <p class="card-text">
-                    <table class="table">
+                    <table id="rob_table" class="table">
                       <thead>
                         <tr>
                           <th scope="col">Instruction</th>
                           <th scope="col">State</th>
-                          <th scope="col">Emission C.</th>
-                          <th scope="col">Result</th>
+                          <th scope="col">Emission</th>
                           <th scope="col">Destination</th>
-                          <th scope="col">Completion C.</th>
+                          <th scope="col">Completion</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -218,11 +229,11 @@
             </div>
           </div>
         <div class="btn-group col-3 w-100" role="group" aria-label="Botões">
-          <button type="button" class="btn btn-secondary w-100" onclick="home()">
+          <button type="button" class="btn btn-outline-secondary w-100" onclick="home()">
             <i class="fa fa-arrow-left" aria-hidden="true"></i>
             Return
           </button>
-          <button type="button" class="btn btn-primary w-100" onclick="next()">
+          <button type="button" class="btn btn-success w-100" onclick="next()">
             Next step
             <i class="fa fa-forward" aria-hidden="true"></i>
           </button>
