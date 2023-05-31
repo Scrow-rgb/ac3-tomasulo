@@ -1,3 +1,5 @@
+var ts;
+
 $(function(){
     $("#execucao").hide();
     add_row();
@@ -34,11 +36,13 @@ function get_instruction_array(){
         instr_array.push(words)
     }
     console.log(instr_array);
+    return instr_array
 }
 
 
 function next(){
     console.log("next step")
+    ts.next()
 }
 
 function validate(){
