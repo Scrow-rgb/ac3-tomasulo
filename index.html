@@ -5,38 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script src="simulador.js"></script>
+    
     <title>Simulador - Algoritmo de Tomasulo</title>
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="simulador.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-
-    <script>
-    function execute(){
-        $("#tela_inicial").hide();
-        $("#execucao").show();
-    }
-    function voltar(){
-        $("#tela_inicial").show();
-        $("#execucao").hide();
-    }
-    $(document).ready(function(){
-        $("#execucao").hide();
-    });
-    function adicionar_linha(){
-        var nova_lina = $("#instuction").clone();
-        var index = $("#index").val();
-        
-        nova_lina.attr("index", index++);
-        console.log(nova_lina)
-
-        
-
-        nova_lina.appendTo("#table_body");
-
-    }
-    </script>
 
     <div class="container" id="tela_inicial">
         <div class="row">
