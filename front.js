@@ -10,16 +10,32 @@ function execute(){
     $("#execucao").show();
     arq = new Architecture();
     load_fu_table(arq);
-    console.log(arq.aFu_add)
+    load_instructions_table();
+}
+
+function load_instructions_table(){
+    var instruction_rows = document.querySelectorAll(".instruction_row");
+    var length = instruction_rows.length-1;
+    var tableBody = $("#instructions_table tbody"); // Get the reference to the table body
+    tableBody.empty(); // Remove all rows from the table body
+    console.log(length)
+    for(i=1;i<length+1;i++){
+        console.log($("#register_xi_"+i).text());
+        var newRow = $("<tr>"); // Create a new row with data
+        var instr_name = $("<td>").text($("#select_instruction_"+i+" option:selected").text());
+        var dest_reg = $("<td>").text($("#register_"+i+" option:selected").text());
+        var xi = $("<td>").text($("#register_xi_"+i).val());
+        var xj = $("<td>").text($("#register_xj_"+i).val());
+        newRow.append(instr_name, dest_reg,xi,xj);
+        tableBody.append(newRow); // Append the new row to the table body
+    }
 }
 
 function load_fu_table(arq){
     var fus = arq.fus;
     var tableBody = $("#fu_table tbody"); // Get the reference to the table body
-    
+    tableBody.empty(); // Remove all rows from the table body
     for (var key in fus) {
-        console.log(key)
-        console.log(fus[key])
         for(i=0;i<fus[key];i++){
             var newRow = $("<tr>"); // Create a new row with data
             var nameCell = $("<td>").text(`${key}${i}`);
@@ -72,6 +88,10 @@ function clear_table(){
         $("#table_body").find("#instruction_"+i).remove();
     }
     $("#row_count").val(1);
+    $("#select_instruction_1").val("");
+    $("#register_1").val("");
+    $("#register_xi_1").val("");
+    $("#register_xj_1").val("");
 }
 
 function onchange_instruction(elemento){
@@ -79,10 +99,10 @@ function onchange_instruction(elemento){
     var id_elemento = $(elemento).attr("id");
     var id = id_elemento.replace(/\D/g, "");
     if(selectedValue == 6){
-        $("#register3_"+id).prop("disabled", true);
-        $("#register3_"+id).attr("placeholder", "");
+        $("#register_xj_"+id).prop("disabled", true);
+        $("#register_xj_"+id).attr("placeholder", "");
     }else{
-        $("#register3_"+id).prop("disabled", false);
+        $("#register_xj_"+id).prop("disabled", false);
     }
 }
 
@@ -108,8 +128,8 @@ function add_row(){
     nova_lina.attr("id", "instruction_"+index);
     nova_lina.find("#select_instruction").attr("id", "select_instruction_"+index);
     nova_lina.find("#register").attr("id", "register_"+index);
-    nova_lina.find("#register2").attr("id", "register2_"+index);
-    nova_lina.find("#register3").attr("id", "register3_"+index);
+    nova_lina.find("#register_xi").attr("id", "register_xi_"+index);
+    nova_lina.find("#register_xj").attr("id", "register_xj_"+index);
 
     nova_lina.appendTo("#table_body");
     nova_lina.removeAttr("hidden");

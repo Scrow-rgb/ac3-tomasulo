@@ -77,10 +77,10 @@
                   </select>
                 </td>
                 <td>
-                  <input type="text" id="register2" placeholder="(R0,R1,30...)" class="form-control">
+                  <input type="text" id="register_xi" placeholder="(R0,R1,30...)" class="form-control">
                 </td>
                   <td>
-                    <input type="text" id="register3" placeholder="(R0,R1,30...)" class="form-control">
+                    <input type="text" id="register_xj" placeholder="(R0,R1,30...)" class="form-control">
                 </td>
               </tr>
             </tbody>
@@ -104,7 +104,7 @@
     <div class="container" id="execucao">
       <div class="card m-4 p-4">
         <h1 class="text-center pt-4 text-secondary">Execution</h1>
-        <h3 class="text-center text-dark mb-4">(Step <label class="text-success">1</label>)</h3>
+        <h3 class="text-center text-dark mb-4">(Step <label class="text-success">0</label>)</h3>
         <div class="container">
           <div class="row">
             <div class="col-sm-6">
@@ -112,14 +112,13 @@
                 <div class="card-body">
                   <h5 class="card-title">Instructions</h5>
                   <p class="card-text">
-                    <table class="table">
+                    <table id="instructions_table" class="table">
                       <thead>
                         <tr>
                           <th scope="col">Name</th>
                           <th scope="col">D</th>
                           <th scope="col">Xi</th>
                           <th scope="col">Xj</th>
-                          <th scope="col">Xk</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -128,7 +127,6 @@
                           <td>R0</td>
                           <td>R1</td>
                           <td>R2</td>
-                          <td>0</td>
                         </tr>
                       </tbody>
                     </table>
