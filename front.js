@@ -3,6 +3,9 @@ $(function(){
     $("#execucao").hide();
     add_row();
     load_registers();
+    $('#customFile').on('click', function() {
+        this.value = null; // Reset the file input value
+      }).on('change', importFile);
   });
 
 function execute(){
@@ -55,6 +58,7 @@ function next(){
 }
 
 function importFile(){
+  var instructions = []
   const fileInput = document.getElementById('customFile');
   const file = fileInput.files[0];
   
@@ -66,18 +70,45 @@ function importFile(){
 
   const reader = new FileReader();
 
-  reader.onload = function(e) {
-    const contents = e.target.result;
-    const lines = contents.split('\n');
+  reader.onload = function(event) {
+    const fileContent = event.target.result;
+    const lines = fileContent.split('\n');
+    const lineCount = lines.length;
 
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
-      // Do something with each line of the file
+        const line = lines[i].trim();
+        const words = line.split(' ');
+        // Do something with each line of the file
+        //instructions = instructions.concat(words);
+        instructions.push(words);
     }
-  };
+    console.log(instructions);
+    console.log('Number of lines:', lineCount);
+
+    
+    console.log(instructions[0][0])
+
+    // Add to our table
+    clear_table();
+    for(i=0;i<lines.length;i++){
+        $("#select_instruction_" + (i+1) + " option").filter(function() {
+            return $(this).text() === instructions[i][0];
+          }).prop("selected", true);
+        $("#register_" + (i+1) + " option").filter(function() {
+            return $(this).text() === instructions[i][1];
+          }).prop("selected", true);
+        $("#register_xi_"+(i+1)).val(instructions[i][2]);
+        $("#register_xj_"+(i+1)).val(instructions[i][3]);
+        
+        if (i < lines.length - 1) {
+            add_row();
+        } else {
+            continue;
+        }
+    }
+    };
 
   reader.readAsText(file);
-
 }
 
 function clear_table(){
