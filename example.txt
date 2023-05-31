@@ -1,0 +1,3 @@
+Addi R0 R0 25
+Sub R1 R0 R0
+Add R0 R1 R0

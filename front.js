@@ -18,7 +18,6 @@ function load_instructions_table(){
     var length = instruction_rows.length-1;
     var tableBody = $("#instructions_table tbody"); // Get the reference to the table body
     tableBody.empty(); // Remove all rows from the table body
-    console.log(length)
     for(i=1;i<length+1;i++){
         console.log($("#register_xi_"+i).text());
         var newRow = $("<tr>"); // Create a new row with data
