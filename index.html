@@ -8,27 +8,27 @@
     <title>Simulador - Algoritmo de Tomasulo</title>
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="front.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"></head>
 <body>
   
     <div class="container" id="tela_inicial">
       <div class="card m-4 p-4">
+        <div class="position-absolute top-0 end-0 m-2 row g-1">
+          <div class="col-auto">
+            <input type="file" class="form-control" id="customFile" style="display: none;" />
+            <button type="button" class="btn btn-outline-dark" onclick="document.getElementById('customFile').click()">
+              <i class="fa fa-upload" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="col">
+            <button type="button" class="btn btn-primary w-100 mb-4" onclick="execute()"> 
+              <i class="fa fa-cogs" aria-hidden="true"></i>    
+            </button> 
+          </div>
+        </div>
         <div class="row">
-            <h1 class="p-4 text-center text-primary">Simulador de Tomasulo</h1>
-            <div class="d-flex justify-content-center">
-              <div class="btn-group col-3" role="group" aria-label="Botões">
-                <button type="button" class="btn btn-danger" onclick="limpar()">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                    <path d="M10.707 8l3.647-3.646a.5.5 0 0 0-.708-.708L10 7.293l-3.646-3.647a.5.5 0 1 0-.708.708L9.293 8l-3.647 3.646a.5.5 0 0 0 .708.708L10 8.707l3.646 3.647a.5.5 0 0 0 .708-.708L10.707 8z"/>
-                  </svg>              
-                </button>
-                <button type="button" class="btn btn-success" onclick="adicionar_linha()">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                  </svg>
-                </button>
-              </div>
-            </div>            
+            <h1 class="mb-4 text-center text-primary">Tomasulo Simulator</h1>
         </div>
         <input hidden id="row_count" type="text" value="0">
         <table class="table">
@@ -70,21 +70,60 @@
               </tr>
             </tbody>
           </table>
-
-          <button type="button" class="btn btn-primary w-100" onclick="execute()">Executar</button>
+          <div class="btn-group col-3 w-100" role="group" aria-label="Botões">
+            <button type="button" class="btn btn-outline-danger" onclick="limpar()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                <path d="M10.707 8l3.647-3.646a.5.5 0 0 0-.708-.708L10 7.293l-3.646-3.647a.5.5 0 1 0-.708.708L9.293 8l-3.647 3.646a.5.5 0 0 0 .708.708L10 8.707l3.646 3.647a.5.5 0 0 0 .708-.708L10.707 8z"/>
+              </svg>              
+            </button>
+            <button type="button" class="btn btn-success" onclick="adicionar_linha()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+              </svg>
+            </button>
+          </div>
       </div>
     
     </div>
 
     <div class="container" id="execucao">
       <div class="card m-4 p-4">
-        <h1 class="text-center p-4 text-secondary">Execução</h1>
+        <h1 class="text-center p-4 text-secondary">Execution</h1>
         <div class="container">
           <div class="row">
             <div class="col-sm-6">
               <div class="card mb-3">
                 <div class="card-body">
-                  <h5 class="card-title">Instruções</h5>
+                  <h5 class="card-title">Instructions</h5>
+                  <p class="card-text">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Name</th>
+                          <th scope="col">D</th>
+                          <th scope="col">Xi</th>
+                          <th scope="col">Xj</th>
+                          <th scope="col">Xk</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Add</td>
+                          <td>R0</td>
+                          <td>R1</td>
+                          <td>R2</td>
+                          <td>0</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">Registers</h5>
                   <p class="card-text">
                     <table class="table">
                       <thead>
@@ -107,36 +146,14 @@
             <div class="col-sm-6">
               <div class="card mb-3">
                 <div class="card-body">
-                  <h5 class="card-title">Registradores</h5>
-                  <p class="card-text">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Name</th>
-                          <th scope="col">Value</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>R0</td>
-                          <td>0</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="card mb-3">
-                <div class="card-body">
-                  <h5 class="card-title">Buffer de Reordenamento (ROB - Reorder Buffer)</h5>
+                  <h5 class="card-title">ROB - Reorder Buffer</h5>
                   <p class="card-text">
                     <table class="table">
                       <thead>
                         <tr>
                           <th scope="col">Instruction</th>
                           <th scope="col">State</th>
+                          <th scope="col">Emission Cycle</th>
                           <th scope="col">Result</th>
                           <th scope="col">Destino</th>
                         </tr>
@@ -145,6 +162,7 @@
                         <tr>
                           <td>ADD</td>
                           <td>issue</td>
+                          <td>1</td>
                           <td>-</td>
                           <td>R2</td>
                         </tr>
@@ -157,7 +175,7 @@
             <div class="col-sm-6">
               <div class="card mb-3">
                 <div class="card-body">
-                  <h5 class="card-title">Unidades Funcionais (FU - Functional Units)</h5>
+                  <h5 class="card-title">FU - Functional Units</h5>
                   <p class="card-text">
                     <table class="table">
                       <thead>
@@ -190,8 +208,15 @@
               </div>
             </div>
           </div>
-        </div>
-          <button type="button" class="btn btn-secondary w-100" onclick="voltar()">Voltar</button>
+        <div class="btn-group col-3 w-100" role="group" aria-label="Botões">
+          <button type="button" class="btn btn-secondary w-100" onclick="voltar()">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            Return
+          </button>
+          <button type="button" class="btn btn-primary w-100" onclick="voltar()">
+            Next step
+            <i class="fa fa-forward" aria-hidden="true"></i>
+          </button>
         </div>
     </div>
     

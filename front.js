@@ -15,6 +15,8 @@ function voltar(){
 }
 
 function limpar(){
+    if(!confirm("Limpar tabela?"))
+        return
     var rows = document.querySelectorAll(".intruction_row");
     var length = rows.length
     console.log(length)
