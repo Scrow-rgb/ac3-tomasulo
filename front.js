@@ -1,8 +1,8 @@
 
-$(document).ready(function(){
+$(function(){
     $("#execucao").hide();
     adicionar_linha();
-});
+  });
 
 function execute(){
     $("#tela_inicial").hide();
@@ -12,6 +12,33 @@ function execute(){
 function voltar(){
     $("#tela_inicial").show();
     $("#execucao").hide();
+}
+
+function importFile(){
+  const fileInput = document.getElementById('customFile');
+  const file = fileInput.files[0];
+  
+  if (!(file && file.name.endsWith('.txt'))) {
+    // File is a .txt file, do something
+    alert('Invalid format. Must be a .txt file.');
+    return
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    const contents = e.target.result;
+    const lines = contents.split('\n');
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      // Do something with each line of the file
+      console.log(line);
+    }
+  };
+
+  reader.readAsText(file);
+  
 }
 
 function limpar(){
