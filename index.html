@@ -8,22 +8,25 @@
     <title>Simulador - Algoritmo de Tomasulo</title>
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="simulador.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"></head>
 <body>
     <div class="container" id="tela_inicial">
         <div class="row">
-            <h1>Simulador de Tomasulo</h1>
-            <button type="button" class="btn btn-primary" onclick="adicionar_linha()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+            <h1 class="p-4 text-center text-primary">Simulador de Tomasulo</h1>
+            <div class="d-flex justify-content-center">
+              <div class="btn-group col-3" role="group" aria-label="Botões">
+                <button type="button" class="btn btn-danger" onclick="limpar()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M10.707 8l3.647-3.646a.5.5 0 0 0-.708-.708L10 7.293l-3.646-3.647a.5.5 0 1 0-.708.708L9.293 8l-3.647 3.646a.5.5 0 0 0 .708.708L10 8.707l3.646 3.647a.5.5 0 0 0 .708-.708L10.707 8z"/>
+                  </svg>              
+                </button>
+                <button type="button" class="btn btn-success" onclick="adicionar_linha()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                   </svg>
-            </button>
-            <button type="button" class="btn btn-danger" onclick="limpar()">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                <path d="M10.707 8l3.647-3.646a.5.5 0 0 0-.708-.708L10 7.293l-3.646-3.647a.5.5 0 1 0-.708.708L9.293 8l-3.647 3.646a.5.5 0 0 0 .708.708L10 8.707l3.646 3.647a.5.5 0 0 0 .708-.708L10.707 8z"/>
-              </svg>              
-          </button>
+                </button>
+              </div>
+            </div>            
         </div>
         <input hidden id="row_count" type="text" value="0">
         <table class="table">
@@ -66,11 +69,11 @@
             </tbody>
           </table>
 
-          <button type="button" class="btn btn-success" onclick="execute()">Executar</button>
+          <button type="button" class="btn btn-primary w-100" onclick="execute()">Executar</button>
     </div>
 
     <div class="container" id="execucao">
-        <h1>Execução</h1>
+        <h1 class="text-center p-4">Execução</h1>
         <table class="table">
             <thead>
               <tr>
@@ -101,7 +104,7 @@
               </tr>
             </tbody>
           </table>
-          <button type="button" class="btn btn-warning" onclick="voltar()">Voltar</button>
+          <button type="button" class="btn btn-secondary w-100" onclick="voltar()">Voltar</button>
     </div>
     
     
