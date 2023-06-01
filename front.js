@@ -15,11 +15,12 @@ function execute(){
     $("#tela_inicial").hide();
     $("#execucao").show();
     arq = new Architecture();
+    fus = arq.get_fus();
     load_fu_table(arq);
     load_instructions_table();
     load_rob_table();
     var instructions = get_instruction_array();
-    ts = new Tomasulo(instructions);
+    ts = new Tomasulo(instructions, fus);
 }
 
 function get_instruction_array(){
@@ -40,9 +41,18 @@ function get_instruction_array(){
 }
 
 
-function next(){
+function next_cycle(){
     console.log("next step")
     ts.next()
+}
+
+function update_tables(step, states, instructions_ammount){
+    console.log(states);
+    $("#step").text(step);
+    for( i=0; i < instructions_ammount; i++ ){
+        $("#rob_state_"+(i+1)).text(states[i]);
+    }
+    console.log("update tables")
 }
 
 function validate(){
@@ -72,12 +82,12 @@ function load_rob_table(){
         instruct_aux += ", " + $("#register_xi_"+i).val();
         instruct_aux += ", " + $("#register_xj_"+i).val();
 
-        var newRow = $("<tr>"); // Create a new row with data
-        var instruction = $("<td>").text(instruct_aux);
-        var state = $("<td>").text("issue");
-        var emission_cycle = $("<td>").text("-");
-        var destination = $("<td>").text($("#register_"+i+" option:selected").text());
-        var completion_cycle = $("<td>").text("-");
+        var newRow = $(`<tr id="rob_row_${i}">`); // Create a new row with data
+        var instruction = $(`<td> id="rob_instruction_${i}"`).text(instruct_aux);
+        var state = $(`<td id="rob_state_${i}">`).text("issue");
+        var emission_cycle = $(`<td id="rob_ec_${i}">`).text("-");
+        var destination = $(`<td id="rob_d_${i}">`).text($("#register_"+i+" option:selected").text());
+        var completion_cycle = $(`<td id="rob_cc_${i}">`).text("-");
         newRow.append(instruction, state,emission_cycle,destination,completion_cycle);
         tableBody.append(newRow); // Append the new row to the table body
     }
@@ -106,8 +116,8 @@ function load_fu_table(arq){
     for (var key in fus) {
         for(i=0;i<fus[key];i++){
             var newRow = $("<tr>"); // Create a new row with data
-            var nameCell = $("<td>").text(`${key}${i}`);
-            var stateCell = $("<td>").text("Free");
+            var nameCell = $(`<td id="fu_name_${i+1}">`).text(`${key}${i}`);
+            var stateCell = $(`<td id="fu_state_${i+1}">`).text("Free");
             newRow.append(nameCell, stateCell);
             tableBody.append(newRow); // Append the new row to the table body
         }
