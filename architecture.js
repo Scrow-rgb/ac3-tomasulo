@@ -1,13 +1,7 @@
 class Architecture {
-    constructor() {
+    constructor(fus_cfg) {
       // Functional Units
-      this.fus_cfg = {
-        "Add": 2,
-        "Mult": 2,
-        "Div": 2,
-        "Store": 2,
-        "Load": 2
-      };
+      this.fus_cfg = fus_cfg;
 
       this.fus = [] // Create functional units array
       for(var key in this.fus_cfg){
@@ -19,9 +13,9 @@ class Architecture {
       }
 
       // Cycles per instruction
-      this.add_time = 3;
-      this.md_time = 3; 
-      this.ls_time = 2;
+      //this.add_time = 3;
+      //this.md_time = 3; 
+      //this.ls_time = 2;
     }
 
     get_fus(){

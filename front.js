@@ -1,4 +1,12 @@
-var ts;
+
+let ts;
+let FUS_DICT_CFG = {
+    "Add": 2,
+    "Mult": 2,
+    "Div": 2,
+    "Store": 2,
+    "Load": 2,
+}
 
 $(function(){
     $("#execucao").hide();
@@ -9,12 +17,20 @@ $(function(){
       }).on('change', importFile);
   });
 
+function save_cfg(){
+    FUS_DICT_CFG["Add"] = $('#add_fu_cfg').val();
+    FUS_DICT_CFG["Mult"] = $('#mult_fu_cfg').val();
+    FUS_DICT_CFG["Div"] = $('#div_fu_cfg').val();
+    FUS_DICT_CFG["Store"] = $('#store_fu_cfg').val();
+    FUS_DICT_CFG["Load"] = $('#load_fu_cfg').val();
+}
+
 function execute(){
     if(!validate())
         return
     $("#tela_inicial").hide();
     $("#execucao").show();
-    arq = new Architecture();
+    arq = new Architecture(FUS_DICT_CFG);
     fus = arq.get_fus();
     load_fu_table(arq);
     load_instructions_table();
@@ -44,10 +60,12 @@ function next_cycle(){
     ts.next()
 }
 
-function update_tables(step, states, instructions_ammount, fus){
+function update_tables(step, states, instructions_ammount, fus, emission_arr, completion_arr){
     $("#step").text(step);
     for( i=0; i < instructions_ammount; i++ ){
-        $("#rob_state_"+(i+1)).text(states[i]);
+        $("#rob_state_"+(i+1)).text(states[i]); 
+        $("#rob_ec_"+(i+1)).text(emission_arr[i]);
+        $("#rob_cc_"+(i+1)).text(completion_arr[i]);
     }
     var i = 1;
     for(var key in fus){
@@ -114,6 +132,7 @@ function load_fu_table(arq){
 }
 
 function home(){
+    $("#step").text("0");
     $("#tela_inicial").show();
     $("#execucao").hide();
 }
