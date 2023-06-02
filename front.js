@@ -36,38 +36,27 @@ function get_instruction_array(){
         words.push($("#register_xj_"+i).val())
         instr_array.push(words)
     }
-    console.log(instr_array);
     return instr_array
 }
 
 
 function next_cycle(){
-    console.log("next step")
     ts.next()
 }
 
-function update_tables(step, states, instructions_ammount){
-    console.log(states);
+function update_tables(step, states, instructions_ammount, fus){
     $("#step").text(step);
     for( i=0; i < instructions_ammount; i++ ){
         $("#rob_state_"+(i+1)).text(states[i]);
     }
-    console.log("update tables")
+    var i = 1;
+    for(var key in fus){
+        $("#fu_state_"+i).text(fus[key]);
+        i++;
+    }
 }
 
 function validate(){
-    /*
-    var instruction_rows = document.querySelectorAll(".instruction_row");
-    var length = instruction_rows.length-1;
-    var tableBody = $("#main_table tbody"); // Get the reference to the table body
-    for(i=1;i<length+1;i++){
-        var newRow = $("<tr>"); // Create a new row with data
-        var instr_name = $("<td>").text($("#select_instruction_"+i+" option:selected").text());
-        var dest_reg = $("<td>").text($("#register_"+i+" option:selected").text());
-        var xi = $("<td>").text($("#register_xi_"+i).val());
-    }
-    alert("Preencha os campos corretamente")
-    */
     return true;
 }
 
@@ -113,14 +102,14 @@ function load_fu_table(arq){
     var fus = arq.fus;
     var tableBody = $("#fu_table tbody"); // Get the reference to the table body
     tableBody.empty(); // Remove all rows from the table body
+    var i = 0;
     for (var key in fus) {
-        for(i=0;i<fus[key];i++){
-            var newRow = $("<tr>"); // Create a new row with data
-            var nameCell = $(`<td id="fu_name_${i+1}">`).text(`${key}${i}`);
-            var stateCell = $(`<td id="fu_state_${i+1}">`).text("Free");
-            newRow.append(nameCell, stateCell);
-            tableBody.append(newRow); // Append the new row to the table body
-        }
+        var newRow = $("<tr>"); // Create a new row with data
+        var nameCell = $(`<td id="fu_name_${i+1}">`).text(`${key}`);
+        var stateCell = $(`<td id="fu_state_${i+1}">`).text(`${fus[key]}`);
+        newRow.append(nameCell, stateCell);
+        tableBody.append(newRow); // Append the new row to the table body
+        i++;
     }
 }
 
@@ -152,8 +141,6 @@ function importFile(){
         const words = line.split(' ');
         instructions.push(words);
     }
-    console.log(instructions);
-    console.log('Number of lines:', lineCount);
 
     // Add to our table
     clear_table();
