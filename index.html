@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,23 +10,71 @@
     <script src="architecture.js"></script>
     <script src="tomasulo.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
   </head>
 <body>
   
     <!-- TELA INICIAL -->
     <div class="container" id="tela_inicial">
+
+      <!-- Modal de configurações -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Settings</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h4>Functional Units</h3>
+                    <hr>
+                    <div class="input-group">
+                      <span class="input-group-text">Add/Sub</span>
+                      <input id="add_fu_cfg" type="text" class="form-control" value="2">
+                    </div>
+                    <div class="input-group mt-2">
+                      <span class="input-group-text w-10">Store</span>
+                      <input id="store_fu_cfg" type="text" class="form-control" value="2">
+                    </div>
+                    <div class="input-group mt-2">
+                      <span class="input-group-text">Load</span>
+                      <input id="load_fu_cfg" type="text" class="form-control" value="2">
+                    </div>
+                    
+                    <div class="input-group mt-2">
+                      <span class="input-group-text">Mult</span>
+                      <input id="mult_fu_cfg" type="text" class="form-control" value="2">
+                    </div>
+                    <div class="input-group mt-2">
+                      <span class="input-group-text">Div</span>
+                      <input id="div_fu_cfg" type="text" class="form-control" value="2">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="save_cfg()">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="card m-4 p-4">
         <div class="position-absolute top-0 end-0 m-2 row g-1">
           <div class="col-auto">
             <input type="file" class="form-control" id="customFile" style="display: none;" />
-            <button type="button" class="btn btn-outline-dark" onclick="document.getElementById('customFile').click()">
+            <button type="button" class="btn btn-outline-warning" onclick="document.getElementById('customFile').click()">
               <i class="fa fa-upload" aria-hidden="true"></i>
             </button>
           </div>
           <div class="col">
-            <button type="button" class="btn btn-outline-secondary w-100 mb-4" onclick=""> 
+            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-outline-light w-100 mb-4" onclick=""> 
               <i class="fa fa-cog" aria-hidden="true"></i> 
             </button> 
           </div>
@@ -37,7 +85,7 @@
           </div>
         </div>
         <div class="row">
-            <h1 class="mb-4 text-center text-primary">Tomasulo Simulator</h1>
+            <h1 class="mb-4 text-center text-light">Tomasulo Simulator</h1>
         </div>
         <input hidden id="row_count" type="text" value="0">
         <table id="main_table" class="table">
@@ -125,9 +173,9 @@
             </button> 
           </div>
         </div>
-        <h1 class="text-center pt-4 text-secondary">Execution</h1>
-        <h3 class="text-center text-dark mb-4">(Step <label id="step" class="text-success">0</label>)</h3>
-        <div class="container">
+        <h1 class="text-center pt-4 text-light">Execution</h1>
+        <h3 class="text-center text-secondary mb-4">(Cycle <label id="step" class="text-success">0</label>)</h3>
+        <div class="container mt-2">
           <div class="row">
             <div class="col-sm-6">
               <div class="card mb-3">

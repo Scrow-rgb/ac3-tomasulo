@@ -1,15 +1,16 @@
 class Tomasulo {
     constructor(instructions, fus) {
-      this.state = 0; // Ciclo inicial, começar zerado
+      this.cycle = 0; // Ciclo inicial, começar zerado
       this.instructions = instructions;
       this.instructions_state = Array(instructions.length).fill("issue");
       this.instr_ammount = instructions.length;
+      this.steps_to_execute = Array(instructions.length).fill(1);
+      this.steps= Array(instructions.length).fill(1);
       this.fus = fus;
-
-      this.ammount_fu = 0;
-      for(var key in this.fus){
-        this.ammount_fu += this.fus[key];
-      }
+      this.ammount_fu = fus.length;
+      this.reservation_station = [];
+      this.emission_arr = Array(instructions.length).fill(0);
+      this.completion_arr = Array(instructions.length).fill(0);
     }
 
     getFu(instruction){
@@ -39,51 +40,81 @@ class Tomasulo {
         return fu;
     }
 
+    raw(instruction){
+        return false
+    }
+
+    war (instruction){
+        return false
+    }
+
+    waw (instruction){
+        return false
+    }
+
+    hasDependency(inst){
+        var dependency = this.raw(inst) || this.war(inst) || this.waw(inst) ? true : false;
+        return dependency
+    }
+
     next(){
-        this.state += 1; // Próximo estado (ciclo)
+        this.cycle += 1; // Próximo estado (ciclo)
+        var i = 0;
+        var flag = true;
+        while (i < this.instr_ammount && flag){ // Loop que percorre todas as intstruções
 
-        for (i=0; i<this.instr_ammount; i++){ // Loop que percorre todas as intstruções
-            var dependencia = false; // Para identificar se há dependencia de dados
-            if(this.instructions_state[i] == "issue"){ // Se ainda não foi executada
+            // Verificar se há dependencia de dados
+            var dependency = i != 0 ? this.hasDependency(this.instructions[i]) : false; // Na primeira instrução não há necescidade de verificar dependência
 
-                if(i!=0){ // Na primeira instrução não há necescidade de verificar dependência
-                    // Verificar se há dependencia de dados (RAW, WAW, WAR)
-                    console.log(this.instructions[i][1])
-                    dependencia = false;
-                }
-
-                if(dependencia){ // Se há dependência, a instrução deverá aguardar
-                    this.instructions_state[i] = "awaiting"
+            switch(this.instructions_state[i]){
+                case "issue":
+                    if(dependency){ // Se há dependência, a instrução deverá aguardar
+                        this.instructions_state[i] = "awaiting"
+                        flag = false;
+                    }else{ // Se não
+                        var instruction = this.instructions[i][0];
+                        var fu_name = this.getFu(instruction); // Obter unidade funcional da instrução
+                        var found_fu = false;
+                        for (var key in this.fus) {
+                            if (key.includes(fu_name) && this.fus[key] == "Free" && flag) {
+                              this.instructions_state[i] = "execute"; // passar instrução para execute
+                              this.emission_arr[i] = this.cycle;
+                              this.fus[key] = "Busy"; // passar instrução para execute
+                              flag = false;
+                              found_fu = true;
+                              break; // Encontrou uma FU livre, parar
+                            }
+                        }
+                        if(!found_fu && flag){
+                            console.log(this.instructions[i])
+                            this.reservation_station.push(instruction[i])
+                            this.instructions_state[i] = "awaiting";
+                            flag = false;
+                        }
+                    }
                     break;
-                }else{ // Se não
+                case "execute":
+                    this.steps[i] += 1;
+                    if(this.steps[i] >= this.steps_to_execute[i]){
+                        this.instructions_state[i] = "write back";
+                    }
+                    break;
+                case "write back":
+                    this.instructions_state[i] = "commit";
+                    this.completion_arr[i] = this.cycle;
                     var instruction = this.instructions[i][0];
                     var fu_name = this.getFu(instruction); // Obter unidade funcional da instrução
                     for (var key in this.fus) {
-                        if (key.includes(fu_name) && this.fus[key] == "Free") {
-                          this.instructions_state[i] = "execute"; // passar instrução para execute
-                          this.fus[key] = "busy";
-                          //$("#fu_state_"+(i+1)).text("Busy");
-                          break;
-                        }
-                      }
-                    /*
-                    for(i=0; i<this.ammount_fu; i++){ // Percorrer unidades funcionais
-                        var table_instr_name = $("#fu_name_"+(i+1)).text();
-                        table_instr_name = table_instr_name.split('').slice(0, 3).join('');
-                        var state = $("#fu_state_"+(i+1)).text();
-                        if(fu == table_instr_name && state == "Free"){
-                            // passar instrução para execute
-                            this.instructions_state[i] = "execute"
-                            $("#fu_state_"+(i+1)).text("Busy");
-                            break;
+                        if (key.includes(fu_name) && this.fus[key] == "Busy" && flag) {
+                          this.fus[key] = "Free"; // passar instrução para execute
+                          flag = false;
+                          break; // Encontrou uma FU livre, parar
                         }
                     }
-                    */
                     break;
-                }
-
             }
+            i++;
         }
-        update_tables(this.state, this.instructions_state, this.instr_ammount, this.fus);
+        update_tables(this.cycle, this.instructions_state, this.instr_ammount, this.fus, this.emission_arr, this.completion_arr);
     }
 }
