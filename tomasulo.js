@@ -8,7 +8,14 @@ class Tomasulo {
       this.steps= Array(instructions.length).fill(1);
       this.fus = fus;
       this.ammount_fu = fus.length;
-      this.reservation_station = [];
+      this.reservation_station = {
+        "Add": [],
+        "Mult": [],
+        "Div": [],
+        "Store": [],
+        "Load": []
+      };
+      this.register_value = Array(16).fill(0);
       this.emission_arr = Array(instructions.length).fill(0);
       this.completion_arr = Array(instructions.length).fill(0);
     }
@@ -60,34 +67,54 @@ class Tomasulo {
     next(){
         this.cycle += 1; // Próximo estado (ciclo)
         var i = 0;
-        var flag = true;
+        var flag = true; // Flag para parar de percorrer as instruções
         while (i < this.instr_ammount && flag){ // Loop que percorre todas as intstruções
 
             // Verificar se há dependencia de dados
             var dependency = i != 0 ? this.hasDependency(this.instructions[i]) : false; // Na primeira instrução não há necescidade de verificar dependência
+            var instruction = this.instructions[i][0]; // Obtém opcode de instrução atual
+            var fu_name = this.getFu(instruction); // Obter unidade funcional da instrução atual
 
             switch(this.instructions_state[i]){
+                case "awaiting": // Se a instrução estiver aguardando liberação de FU ou dependencia de dados
+                    var found_fu = false;
+                    for (var key in this.fus) {
+                        if (key.includes(fu_name) && this.fus[key] == "Free"){
+                            found_fu = true;
+                            break;
+                        }
+                    }
+                    if(!this.hasDependency(instruction) && found_fu){ // Se não há dependencia de dados, e há FU livre
+                        this.instructions_state[i] = "execute"; // passar instrução para execute
+                        this.emission_arr[i] = this.cycle;
+                        this.fus[key] = "Busy";
+                        // Clear the values of the key
+                        this.reservation_station["Add"] = [];
+                        console.log(this.reservation_station)
+                        //flag = false;
+                    }
+                    break;
                 case "issue":
                     if(dependency){ // Se há dependência, a instrução deverá aguardar
                         this.instructions_state[i] = "awaiting"
                         flag = false;
                     }else{ // Se não
-                        var instruction = this.instructions[i][0];
-                        var fu_name = this.getFu(instruction); // Obter unidade funcional da instrução
                         var found_fu = false;
                         for (var key in this.fus) {
                             if (key.includes(fu_name) && this.fus[key] == "Free" && flag) {
                               this.instructions_state[i] = "execute"; // passar instrução para execute
                               this.emission_arr[i] = this.cycle;
-                              this.fus[key] = "Busy"; // passar instrução para execute
+                              this.fus[key] = "Busy";
                               flag = false;
                               found_fu = true;
                               break; // Encontrou uma FU livre, parar
                             }
                         }
                         if(!found_fu && flag){
-                            console.log(this.instructions[i])
-                            this.reservation_station.push(instruction[i])
+                            //var fu_name = this.getFu(this.instructions[i][0]); // Obter unidade funcional da instrução
+                            if(this.reservation_station[fu_name].length == 0){
+                                this.reservation_station[fu_name].push(this.instructions[i])
+                            }
                             this.instructions_state[i] = "awaiting";
                             flag = false;
                         }
@@ -100,21 +127,34 @@ class Tomasulo {
                     }
                     break;
                 case "write back":
+                    var destination_register = this.instructions[i][1];
+                    var id = destination_register.replace(/\D/g, "");
+                    this.register_value[id] = i+1;
                     this.instructions_state[i] = "commit";
                     this.completion_arr[i] = this.cycle;
-                    var instruction = this.instructions[i][0];
-                    var fu_name = this.getFu(instruction); // Obter unidade funcional da instrução
                     for (var key in this.fus) {
                         if (key.includes(fu_name) && this.fus[key] == "Busy" && flag) {
                           this.fus[key] = "Free"; // passar instrução para execute
-                          flag = false;
+                          //flag = false;
                           break; // Encontrou uma FU livre, parar
                         }
                     }
                     break;
+                case "commit":
+                    // TODO
+                    break;
             }
             i++;
         }
-        update_tables(this.cycle, this.instructions_state, this.instr_ammount, this.fus, this.emission_arr, this.completion_arr);
+        update_tables(
+            this.cycle,
+            this.instructions_state, 
+            this.instr_ammount, 
+            this.fus, 
+            this.emission_arr, 
+            this.completion_arr,
+            this.reservation_station,
+            this.register_value
+            );
     }
 }

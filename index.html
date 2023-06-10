@@ -34,24 +34,24 @@
                     <hr>
                     <div class="input-group">
                       <span class="input-group-text">Add/Sub</span>
-                      <input id="add_fu_cfg" type="text" class="form-control" value="2">
+                      <input id="add_fu_cfg" type="text" class="form-control" value="1">
                     </div>
                     <div class="input-group mt-2">
                       <span class="input-group-text w-10">Store</span>
-                      <input id="store_fu_cfg" type="text" class="form-control" value="2">
+                      <input id="store_fu_cfg" type="text" class="form-control" value="1">
                     </div>
                     <div class="input-group mt-2">
                       <span class="input-group-text">Load</span>
-                      <input id="load_fu_cfg" type="text" class="form-control" value="2">
+                      <input id="load_fu_cfg" type="text" class="form-control" value="1">
                     </div>
                     
                     <div class="input-group mt-2">
                       <span class="input-group-text">Mult</span>
-                      <input id="mult_fu_cfg" type="text" class="form-control" value="2">
+                      <input id="mult_fu_cfg" type="text" class="form-control" value="1">
                     </div>
                     <div class="input-group mt-2">
                       <span class="input-group-text">Div</span>
-                      <input id="div_fu_cfg" type="text" class="form-control" value="2">
+                      <input id="div_fu_cfg" type="text" class="form-control" value="1">
                     </div>
                   </div>
                 </div>
@@ -176,6 +176,27 @@
         <h1 class="text-center pt-4 text-light">Execution</h1>
         <h3 class="text-center text-secondary mb-4">(Cycle <label id="step" class="text-success">0</label>)</h3>
         <div class="container mt-2">
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Reservation Stations (RS)</h5>
+              <p class="card-text">
+                <table id="rs_table" class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Functional Unit</th>
+                      <th scope="col">State</th>
+                      <th scope="col">Instruction</th>
+                      <th scope="col">D</th>
+                      <th scope="col">Xi</th>
+                      <th scope="col">Xj</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </p>
+            </div>
+          </div>
           <div class="row">
             <div class="col-sm-6">
               <div class="card mb-3">
@@ -243,13 +264,13 @@
                       <thead>
                         <tr>
                           <th scope="col">Name</th>
-                          <th scope="col">Value</th>
+                          <th scope="col">Value (Inst. Id)</th>
                         </tr>
                       </thead>
                       <tbody id="registers_table_body">
-                        <tr id="register_name" hidden>
-                          <td class="register_name" >R0</td>
-                          <td>0</td>
+                        <tr id="register_row" hidden>
+                          <td id="register_name" >R0</td>
+                          <td id="register_value">0</td>
                         </tr>
                       </tbody>
                     </table>
