@@ -39,7 +39,7 @@ class Tomasulo {
                 fu = "Load"
                 break;
             case "Store":
-                fu = "Div"
+                fu = "Store"
                 break;
             default:
                 break;
@@ -92,7 +92,6 @@ class Tomasulo {
     }
 
     hasDependency(inst, i){
-        debugger;
         var dependency = this.raw(inst, i) || this.war(inst, i) || this.waw(inst, i) ? true : false;
         return dependency
     }
@@ -122,13 +121,17 @@ class Tomasulo {
                         this.emission_arr[i] = this.cycle;
                         this.fus[key] = "Busy";
                         // Clear the values of the key
-                        this.reservation_station["Add"] = [];
+                        this.reservation_station[this.instructions[i][0]] = [];
                         console.log(this.reservation_station)
                         //flag = false;
                     }
                     break;
                 case "issue":
                     if(dependency){ // Se há dependência, a instrução deverá aguardar
+                        debugger;
+                        if(this.reservation_station[fu_name].length == 0){
+                            this.reservation_station[fu_name].push(this.instructions[i])
+                        }
                         this.instructions_state[i] = "awaiting"
                         flag = false;
                     }else{ // Se não
@@ -145,6 +148,7 @@ class Tomasulo {
                         }
                         if(!found_fu && flag){
                             //var fu_name = this.getFu(this.instructions[i][0]); // Obter unidade funcional da instrução
+                            debugger;
                             if(this.reservation_station[fu_name].length == 0){
                                 this.reservation_station[fu_name].push(this.instructions[i])
                             }

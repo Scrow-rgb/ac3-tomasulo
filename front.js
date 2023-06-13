@@ -137,7 +137,6 @@ function load_rob_table(){
 
         var instruction_name = $("#select_instruction_"+i+" option:selected").text();
         var destination = ""
-        debugger;
         if( instruction_name == "Store"){
             destination = $(`<td id="rob_d_${i}">`).text($("#register_xi_"+i).val() + "(" + $("#register_xj_"+i).val() + ")");
         }else{

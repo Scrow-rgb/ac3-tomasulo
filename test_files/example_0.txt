@@ -1,4 +1,4 @@
 Add R0 R1 R2
 Mult R3 R4
 Load R5 0 R7
-Store R7 8 R8
+Store R8 8 R9
