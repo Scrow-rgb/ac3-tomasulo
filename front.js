@@ -9,6 +9,7 @@ let FUS_DICT_CFG = {
 }
 
 $(function(){
+    $("#finished").hide();
     $("#execucao").hide();
     add_row();
     $('#customFile').on('click', function() {
@@ -77,7 +78,12 @@ function next_cycle(){
     ts.next()
 }
 
-function update_tables(step, states, instructions_ammount, fus, emission_arr, completion_arr, reservation_station, regs_val){
+function update_tables(step, states, instructions_ammount, fus, emission_arr, completion_arr, reservation_station, regs_val, f){
+    if(f){
+        $("#finished").show();
+        return
+    }
+    
     $("#step").text(step);
     for( i=0; i < instructions_ammount; i++ ){
         $("#rob_state_"+(i+1)).text(states[i]); 
@@ -189,6 +195,7 @@ function load_fu_table(arq){
 }
 
 function home(){
+    $("#finished").hide();
     $("#step").text("0");
     $("#tela_inicial").show();
     $("#execucao").hide();

@@ -98,11 +98,11 @@ class Tomasulo {
     }
 
     next(){
+        var finished_instr = 0; // Contador de instruções já finalizadas
         this.cycle += 1; // Próximo estado (ciclo)
         var i = 0;
         var flag = true; // Flag para parar de percorrer as instruções
         while (i < this.instr_ammount && flag){ // Loop que percorre todas as intstruções
-
             // Verificar se há dependencia de dados
             var dependency = i != 0 ? this.hasDependency(this.instructions[i], i) : false; // Na primeira instrução não há necescidade de verificar dependência
             var instruction = this.instructions[i][0]; // Obtém opcode de instrução atual
@@ -174,7 +174,7 @@ class Tomasulo {
                     }
                     break;
                 case "commit":
-                    // TODO
+                    finished_instr += 1;
                     break;
             }
             i++;
@@ -187,7 +187,8 @@ class Tomasulo {
             this.emission_arr, 
             this.completion_arr,
             this.reservation_station,
-            this.register_value
+            this.register_value,
+            this.instr_ammount == finished_instr ? 1 : 0
             );
     }
 }
