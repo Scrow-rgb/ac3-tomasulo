@@ -122,13 +122,21 @@ function load_rob_table(){
         var instruct_aux =  $("#select_instruction_"+i+" option:selected").text();
         instruct_aux += " " + $("#register_"+i+" option:selected").text();
         instruct_aux += ", " + $("#register_xi_"+i).val();
-        instruct_aux += ", " + $("#register_xj_"+i).val();
+        instruct_aux += " " + $("#register_xj_"+i).val();
 
         var newRow = $(`<tr id="rob_row_${i}">`); // Create a new row with data
         var instruction = $(`<td> id="rob_instruction_${i}"`).text(instruct_aux);
         var state = $(`<td id="rob_state_${i}">`).text("issue");
         var emission_cycle = $(`<td id="rob_ec_${i}">`).text("-");
-        var destination = $(`<td id="rob_d_${i}">`).text($("#register_"+i+" option:selected").text());
+
+        var instruction_name = $("#select_instruction_"+i+" option:selected").text();
+        var destination = ""
+        debugger;
+        if( instruction_name == "Store"){
+            destination = $(`<td id="rob_d_${i}">`).text($("#register_xi_"+i).val() + "(" + $("#register_xj_"+i).val() + ")");
+        }else{
+            destination = $(`<td id="rob_d_${i}">`).text($("#register_"+i+" option:selected").text());
+        }
         var completion_cycle = $(`<td id="rob_cc_${i}">`).text("-");
         newRow.append(instruction, state,emission_cycle,destination,completion_cycle);
         tableBody.append(newRow); // Append the new row to the table body

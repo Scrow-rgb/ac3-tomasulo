@@ -47,20 +47,53 @@ class Tomasulo {
         return fu;
     }
 
-    raw(instruction){
-        return false
+    // Leitura após escrita
+    raw(instruction, index){
+        var dependency = false;
+        for( i = 0; i < index; i++ ){
+           console.log("Escrita em: ", this.instructions[i][1])
+           var write_at = this.instructions[i][1];
+           // Se há leitura pós escrita, e a instrução anterior ainda não foi finalizada
+           if((instruction[2] == write_at || instruction[3] == write_at) && (this.instructions_state[i] != "commit")){
+                dependency = true; // Há dependencia de dados
+           }
+        }
+        return dependency
     }
 
-    war (instruction){
-        return false
+    // Escrita após leitura
+    war (instruction, index){
+        var dependency = false;
+        for( i = 0; i < index; i++ ){
+           console.log("Leitura em: ", this.instructions[i][2])
+           console.log("Leitura em: ", this.instructions[i][3])
+           var read = this.instructions[i][2];
+           var read_b = this.instructions[i][3];
+           // Se há leitura pós escrita, e a instrução anterior ainda não foi finalizada
+           if((instruction[1] == read || instruction[1] == read_b) && (this.instructions_state[i] != "commit")){
+                dependency = true; // Há dependencia de dados
+           }
+        }
+        return dependency
     }
 
-    waw (instruction){
-        return false
+    // Escrita após escrita
+    waw (instruction, index){
+        var dependency = false;
+        for( i = 0; i < index; i++ ){
+           console.log("Escrita em: ", this.instructions[i][1])
+           var write_at = this.instructions[i][1];
+           // Se há leitura pós escrita, e a instrução anterior ainda não foi finalizada
+           if((instruction[1] == write_at) && (this.instructions_state[i] != "commit")){
+                dependency = true; // Há dependencia de dados
+           }
+        }
+        return dependency
     }
 
-    hasDependency(inst){
-        var dependency = this.raw(inst) || this.war(inst) || this.waw(inst) ? true : false;
+    hasDependency(inst, i){
+        debugger;
+        var dependency = this.raw(inst, i) || this.war(inst, i) || this.waw(inst, i) ? true : false;
         return dependency
     }
 
@@ -71,7 +104,7 @@ class Tomasulo {
         while (i < this.instr_ammount && flag){ // Loop que percorre todas as intstruções
 
             // Verificar se há dependencia de dados
-            var dependency = i != 0 ? this.hasDependency(this.instructions[i]) : false; // Na primeira instrução não há necescidade de verificar dependência
+            var dependency = i != 0 ? this.hasDependency(this.instructions[i], i) : false; // Na primeira instrução não há necescidade de verificar dependência
             var instruction = this.instructions[i][0]; // Obtém opcode de instrução atual
             var fu_name = this.getFu(instruction); // Obter unidade funcional da instrução atual
 
@@ -84,7 +117,7 @@ class Tomasulo {
                             break;
                         }
                     }
-                    if(!this.hasDependency(instruction) && found_fu){ // Se não há dependencia de dados, e há FU livre
+                    if(!dependency && found_fu){ // Se não há dependencia de dados, e há FU livre
                         this.instructions_state[i] = "execute"; // passar instrução para execute
                         this.emission_arr[i] = this.cycle;
                         this.fus[key] = "Busy";
