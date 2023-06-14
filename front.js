@@ -179,9 +179,9 @@ function load_registers(){
     }
 }
 
-function load_fu_table(arq){
+function load_fu_table(arq){ // Função para carregar tabela de unidades funcionais
     var fus = arq.fus;
-    var tableBody = $("#fu_table tbody"); // Get the reference to the table body
+    var tableBody = $("#fu_table tbody"); // Get the reference to the table body 
     tableBody.empty(); // Remove all rows from the table body
     var i = 0;
     for (var key in fus) {
