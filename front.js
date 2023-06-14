@@ -6,6 +6,7 @@ let FUS_DICT_CFG = {
     "Div": 1,
     "Store": 1,
     "Load": 1,
+    "Bne": 1,
 }
 
 $(function(){

@@ -45,8 +45,7 @@ class Tomasulo {
       case "Bne":
         fu = "Bne";
         break;
-
-      default:
+        default:
         break;
     }
     return fu;
@@ -185,7 +184,7 @@ class Tomasulo {
             this.instructions_state[i] = "write back";
           }
           break;
-        case "write back":
+        case "write result":
           var destination_register = this.instructions[i][1];
           var id = destination_register.replace(/\D/g, "");
           this.register_value[id] = i + 1;
