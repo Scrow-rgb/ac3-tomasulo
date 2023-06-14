@@ -181,7 +181,7 @@ class Tomasulo {
         case "execute":
           this.steps[i] += 1;
           if (this.steps[i] >= this.steps_to_execute[i]) {
-            this.instructions_state[i] = "write back";
+            this.instructions_state[i] = "write result";
           }
           break;
         case "write result":
